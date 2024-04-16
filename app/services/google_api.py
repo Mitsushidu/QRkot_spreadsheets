@@ -5,9 +5,10 @@ from aiogoogle import Aiogoogle
 from app.core.config import settings
 
 FORMAT = "%Y/%m/%d %H:%M:%S"
+now_date_time = datetime.now().strftime(FORMAT)
 SPREADSHEET_BODY = {
     'properties': {
-        'title': f'Отчёт от {datetime.now().strftime(FORMAT)}',
+        'title': f'Отчёт от {now_date_time}',
         'locale': 'ru_RU'
     },
     'sheets': [
@@ -31,6 +32,7 @@ PERMISSIONS_BODY = {
 
 
 async def spreadsheets_create(wrapper_services: Aiogoogle) -> str:
+    now_date_time = datetime.now().strftime(FORMAT) # noqa
     service = await wrapper_services.discover('sheets', 'v4')
     response = await wrapper_services.as_service_account(
         service.spreadsheets.create(json=SPREADSHEET_BODY)
@@ -57,9 +59,10 @@ async def spreadsheets_update_value(
         projects: list,
         wrapper_services: Aiogoogle
 ) -> None:
+    now_date_time = datetime.now().strftime(FORMAT)
     service = await wrapper_services.discover('sheets', 'v4')
     table_values = [
-        ['Отчёт от', datetime.now().strftime(FORMAT)],
+        ['Отчёт от', now_date_time],
         ['Топ проектов по скорости закрытия'],
         ['Название проекта', 'Время сбора', 'Описание']
     ]
