@@ -5,7 +5,7 @@ from aiogoogle import Aiogoogle
 from app.core.config import settings
 
 FORMAT = "%Y/%m/%d %H:%M:%S"
-now_date_time = datetime.now().strftime(FORMAT)
+now_date_time = ''  # Переопределяется во время вызова функции
 SPREADSHEET_BODY = {
     'properties': {
         'title': f'Отчёт от {now_date_time}',
