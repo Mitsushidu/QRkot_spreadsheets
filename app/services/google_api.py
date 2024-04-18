@@ -5,25 +5,6 @@ from aiogoogle import Aiogoogle
 from app.core.config import settings
 
 FORMAT = "%Y/%m/%d %H:%M:%S"
-now_date_time = ''  # Переопределяется во время вызова функции
-SPREADSHEET_BODY = {
-    'properties': {
-        'title': f'Отчёт от {now_date_time}',
-        'locale': 'ru_RU'
-    },
-    'sheets': [
-        {'properties': {
-            'sheetType': 'GRID',
-            'sheetId': 0,
-            'title': 'Лист1',
-            'gridProperties': {
-                'rowCount': 100,
-                'columnCount': 11
-            }
-        }
-        }
-    ]
-}
 PERMISSIONS_BODY = {
     'type': 'user',
     'role': 'writer',
@@ -31,11 +12,31 @@ PERMISSIONS_BODY = {
 }
 
 
+def get_spreadsheet_body(now_date_time):
+    return {
+        'properties': {
+            'title': f'Отчёт от {now_date_time}',
+            'locale': 'ru_RU'
+        },
+        'sheets': [
+            {'properties': {
+                'sheetType': 'GRID',
+                'sheetId': 0,
+                'title': 'Лист1',
+                'gridProperties': {
+                    'rowCount': 100,
+                    'columnCount': 11
+                }
+            }
+            }
+        ]
+    }
+
+
 async def spreadsheets_create(wrapper_services: Aiogoogle) -> str:
-    now_date_time = datetime.now().strftime(FORMAT) # noqa
     service = await wrapper_services.discover('sheets', 'v4')
     response = await wrapper_services.as_service_account(
-        service.spreadsheets.create(json=SPREADSHEET_BODY)
+        service.spreadsheets.create(json=get_spreadsheet_body(datetime.now().strftime(FORMAT)))
     )
     spreadsheet_id = response['spreadsheetId']
     return spreadsheet_id
