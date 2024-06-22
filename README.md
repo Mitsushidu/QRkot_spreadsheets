@@ -25,7 +25,7 @@
 3. Заполнить файл .env:
     ```
     DATABASE_URL=sqlite+aiosqlite:///./fastapi.db
-    SECRET=POOPENSHTAUFEN
+    SECRET=secret_key
     ```
 
     Получить JSON-файл с ключом доступа к сервисному аккаунту на Google Cloud Platform. Перенести информацию из этого файла в .env:
